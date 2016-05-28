@@ -1,0 +1,40 @@
+This is a document for team project of Web Programming.
+
+
+* File Structures
+
+	home.php
+	├── login.php
+	├── join.php
+
+	main.php
+	├── draw.php
+	├── load.php
+	├── search.php
+	├── save.php
+	├── delete.php
+	├── edit.php
+
+
+
+* DB Structures
+
+- USER
+────────────────────────────────────────────────────
+│user_num│id│name│age│baby│phone│location│is_single│
+────────────────────────────────────────────────────
+
+- POST
+──────────────────────────────────────────────────
+│post_num│author│content│date│time│public│picture│
+──────────────────────────────────────────────────
+
+- REPLY
+─────────────────────────────────────────────
+│reply_num│post_num│author│content│date│time│
+─────────────────────────────────────────────
+
+- FRIEND
+──────────────────────────────
+│user_num│friend_num|........|
+──────────────────────────────
