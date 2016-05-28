@@ -1,4 +1,3 @@
-<? 
 fuction home()
 {
 
