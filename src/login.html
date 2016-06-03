@@ -1,0 +1,84 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>회원가입</title>
+  </head>
+  <body>
+  <form action = "login.php" method="post">
+  <table border="1">
+  <h1>로그인</h1>
+	<tr>
+		<td>아이디:</td>
+		<td><input type="post" name="id" size=5></td>	
+		<td>비밀번호:</td>
+		<td><input type="password" name="passwd" size=5></td>	
+	</tr>	
+	<tr>
+	<input type=submit value='로그인'>
+	</tr>
+  </table>
+
+  </form>
+  <form action = "join.php" method="post">
+ <table border ="1">
+<tr>
+<td align="right">*아이디:</td>
+<td><input type="post" name="id" size=15 maxlength=12></td>
+</tr>
+<tr>
+<td align="right">*비밀번호:</td>
+<td><input type="password" name="passwd" size=15 maxlength=10></td>
+</tr>
+<tr>
+<td align="right">*이름:</td>
+<td><input type="post" name="name" size=15 maxlength=12></td>
+</tr>
+<tr>
+<td align="right">*연도:</td>
+<td>
+	<select name="year">
+	<? for($i = 1970; $i <= 1999; $i++)?>
+	<option value="<?=$i?>"><?=$i?></option>
+	</select>
+</td>
+</tr>
+<tr>
+<td align="right">성별:</td>
+<td><input type="radio" name="gender" value="male" checked>남성<input type="radio" name="gender" value="female">여성</td>
+</tr>
+<tr>
+<td align="right">휴대전화:</td>
+<td>
+<select name="phone">
+ <option value="010">010</option>
+ <option value="011">011</option>
+ <option value="016">016</option>
+ <option value="017">017</option>
+ <option value="070">070</option>
+</select>
+-
+<input type="post" name="middle_number" size=4>
+-
+<input type="post" name="last_number" size=4>
+</td>
+</tr>
+<tr>
+<td align="right">주 소:</td>
+<td>
+	<select name="location">
+	<option value="서울">서울</option>
+	<option value="대전">대전</option>
+	<option value="울산">울산</option>
+	<option value="대구">대구</option>
+	<option value="부산">부산</option>
+	<option value="인천">인천</option>
+	<option value="세종">세종</option>
+	<option value="제주">제주</option>
+	</select>
+</td>
+</tr>
+ </table>
+ <input type=submit value='회원가입'>
+</form>
+  </body>
+  </html> 
