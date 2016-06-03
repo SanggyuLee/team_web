@@ -3,6 +3,8 @@
 $db = new PDO("mysql:dbname=babycare;host=172.16.24.89","root","master123");
 
 function insert($table, $data) {
+	global $db;
+
 	switch($table) {
 	case "USER":
 		$user_num = $db->quote(hash($data["id"]));
@@ -32,5 +34,35 @@ function insert($table, $data) {
 	default:
 		break;
 	}
+}
+
+function is_exist($table, $id) {
+	global $db;
+
+	switch($table) {
+	case "USER":
+		$id = $db->quote($id);
+		$query = "select * from user where id=$id";
+
+		$result = $db->exec($query);
+		break;
+
+	case "POST":
+		break;
+
+	case "REPLY":
+		break;
+
+	case "FRIEND":
+		break;
+
+	default:
+		break;
+	}
+
+	if($result)
+		return TRUE;
+	else
+		return FALSE;
 }
 ?>
