@@ -37,8 +37,9 @@
 <td align="right">*연도:</td>
 <td>
 	<select name="year">
-	<? for($i = 1970; $i <= 1999; $i++)?>
-	<option value="<?=$i?>"><?=$i?></option>
+		<? for($i = 1970; $i <= 1999; $i++) {?>
+		<option value="<?=$i?>"><?=$i?></option>
+		<? } ?>
 	</select>
 </td>
 </tr>
