@@ -6,6 +6,7 @@ This is a document for team project of Web Programming.
 	home.php
 	├── login.php
 	├── join.php
+	├── db_io.php
 
 	main.php
 	├── draw.php
