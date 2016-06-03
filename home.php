@@ -1,5 +1,0 @@
-fuction home()
-{
-
-}
-?>

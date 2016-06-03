@@ -1,6 +1,5 @@
 This is a document for team project of Web Programming.
 
-
 * File Structures
 
 	home.php
@@ -17,13 +16,12 @@ This is a document for team project of Web Programming.
 	├── edit.php
 
 
-
 * DB Structures
 
 - USER
-────────────────────────────────────────────────────
-│user_num│id│name│age│baby│phone│location│is_single│
-────────────────────────────────────────────────────
+────────────────────────────────────────────────────────────────────
+│user_num│id│password|name│age│baby│phone│location│is_single│gender|
+────────────────────────────────────────────────────────────────────
 
 - POST
 ──────────────────────────────────────────────────
@@ -36,6 +34,6 @@ This is a document for team project of Web Programming.
 ─────────────────────────────────────────────
 
 - FRIEND
-──────────────────────────────
-│user_num│friend_num|........|
-──────────────────────────────
+─────────────────────
+│user_num│friend_num|
+─────────────────────
