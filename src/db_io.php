@@ -36,23 +36,23 @@ function insert($table, $data) {
 		break;
 
 	case "REPLY":
-	$reply_num = $data["post_num"].$data["date"].$data["time"];
-	$post_num = $data["post_num"];
-	$author = $db->quote($data["author"]);
-	$content = $db->quote($data["content"]);
-	$date = $db->quote($data["date"]);
-	$time = $db->quote($data["time"]);
+		$reply_num = $data["post_num"].$data["date"].$data["time"];
+		$post_num = $data["post_num"];
+		$author = $db->quote($data["author"]);
+		$content = $db->quote($data["content"]);
+		$date = $db->quote($data["date"]);
+		$time = $db->quote($data["time"]);
 
-	$query = "insert into REPLY values($reply_num, $post_num, $author, $content, $date, $time)";
-	$db->exec($query);
+		$query = "insert into REPLY values($reply_num, $post_num, $author, $content, $date, $time)";
+		$db->exec($query);
 		break;
 
 	case "FRIEND":
-	$user_num = $data["user_num"];
-	$friend_num = $data["friend_num"];
+		$user_num = $data["user_num"];
+		$friend_num = $data["friend_num"];
 
-	$query = "insert into FRIEND values($user_num,$friend_num)";
-	$db->exec($query);
+		$query = "insert into FRIEND values($user_num,$friend_num)";
+		$db->exec($query);
 		break;
 
 	default:
@@ -80,7 +80,7 @@ function is_exist($table, $id) {
 		break;
 
 	case "FRIEND":
-	
+
 		break;
 
 	default:
