@@ -23,12 +23,36 @@ function insert($table, $data) {
 		break;
 
 	case "POST":
+		$post_num = hash("md5", $data["id"].$data["date"].$data["time"]);
+		$author = $db->quote($data["name"]);
+		$content = $db->quote($data["content"]);
+		$date = $db->quote($data["date"]);
+		$time = $db->quote($data["time"]);
+		$public = $db->quote($data["public"]);
+		$picture = $db->quote($data["picture"]);
+
+		$query = "insert into POST values($post_num, $author,$content,$date,$time,$public,$picture)";
+		$db->exec($query);
 		break;
 
 	case "REPLY":
+	$reply_num = $data["post_num"].$data["date"].$data["time"];
+	$post_num = $data["post_num"];
+	$author = $db->quote($data["author"]);
+	$content = $db->quote($data["content"]);
+	$date = $db->quote($data["date"]);
+	$time = $db->quote($data["time"]);
+
+	$query = "insert into REPLY values($reply_num, $post_num, $author, $content, $date, $time)";
+	$db->exec($query);
 		break;
 
 	case "FRIEND":
+	$user_num = $data["user_num"];
+	$friend_num = $data["friend_num"];
+
+	$query = "insert into FRIEND values($user_num,$friend_num)";
+	$db->exec($query);
 		break;
 
 	default:
@@ -48,12 +72,15 @@ function is_exist($table, $id) {
 		break;
 
 	case "POST":
+
 		break;
 
 	case "REPLY":
+
 		break;
 
 	case "FRIEND":
+	
 		break;
 
 	default:
@@ -66,7 +93,7 @@ function is_exist($table, $id) {
 		return FALSE;
 }
 
-function valid($id,$password) {
+function valid($id, $password) {
 	global $db;
 	$id = $db->quote($id);
 	$password = $db->quote($password);
@@ -78,7 +105,7 @@ function valid($id,$password) {
 		return TRUE;
 	} else {
 		return FALSE;
-		
+
 	}
 }
 
