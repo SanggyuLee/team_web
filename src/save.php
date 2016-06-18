@@ -32,5 +32,5 @@ if(empty($_POST['content']) && $_FILES[picture][size] == 0) {
 }
 
 $board = $_POST['board'];
-header("Location: main.html?board=$board");
+header("Location: main.html?board=news");
 ?>

@@ -4,6 +4,18 @@ include('load.php');
 ensure_logged_in();
 if(!isset($_SESSION))
 	session_start();
+
+if(isset($_POST['delete'])) {
+	delete_post($_POST['num']);
+	unset($_POST);
+} else if(isset($_POST['edit'])) {
+	$post = get_post($_POST['num']);
+} else if(isset($_POST['add_friend'])) {
+	add_friend($_POST['user_num'], $_POST['friend_num']);
+} else if(isset($_POST['delete_friend'])) {
+	remove_friend($_POST['user_num'], $_POST['friend_num']);
+}
+
 ?>
 
 <html>
@@ -30,6 +42,7 @@ if(!isset($_SESSION))
 			#right { background-color:white; height:100%; width:300px; float:left; margin:10px 0 0 10px; padding:80px 0 5px 5px;}
 			#write { padding:10px; background-color: white; }
 			#feed { padding:10px; background-color: white; margin-top:20px;}
+			#page { background-color:#FFF0F0; }
 
 			.search-input { padding:5px 0 0 0; float:right;}
 			.search {float:right; padding:3px 25px 0 10px;}
@@ -39,6 +52,12 @@ if(!isset($_SESSION))
 			.logout {float:right; padding:0 10px;}
 			.user {float:left; text-align: center; height:50px; line-height:50px;}
 
+			.user-list { float:left; display: block; width: 300px; margin: 20px 0;}
+
+			.user-list > input[type=checkbox]:checked + div {height: 0px;}     
+			.user-list > input {display:none;}    
+			.user-item {overflow:hidden;}
+			.search-result {display: block;}
 		</style>
 		<title>
 		</title>
@@ -48,7 +67,7 @@ if(!isset($_SESSION))
 			<div id=menu-wrapper>
 				<div id=main-navigation>
 					<div id=top-menu>
-						<form action=search.php method=post>
+						<form action="" method=post>
 							<div class=search> <input type="image" src="../img/search.png" alt="Submit" width="35"> </div>
 							<div class=search-input> <input type=text name=search size="40" style="height:30px"> </div>
 						</form>
@@ -57,7 +76,7 @@ if(!isset($_SESSION))
 						<div class=home> <a href="main.html?board=news"><img src="../img/home.png" width="40"></a></div>
 						<div class=friend> <img src="../img/friend.png" width="50"></div>
 						<div class=setting> <a href="setting.php"><img src="../img/setting.png" width="40"></a> </div>
-						<div class=user> <a href="main.html?board=info&num=<?=$_SESSION['num']?>"><?=$_SESSION['name']?></a> </div>
+						<div class=user> <a href="main.html?board=friend&num=<?=$_SESSION['num']?>"><?=$_SESSION['name']?></a> </div>
 					</div>
 				</div>
 			</div>
@@ -78,8 +97,8 @@ if(!isset($_SESSION))
 					<div id=middle>
 						<?
 						if(isset($_SESSION['flash'])) {
-						echo $_SESSION['flash'];
-						unset($_SESSION['flash']);
+							echo $_SESSION['flash'];
+							unset($_SESSION['flash']);
 						}
 						?>
 						<div id=write>
@@ -107,13 +126,37 @@ if(!isset($_SESSION))
 						▷ 새글피드
 						<div id=feed>
 							<?
-							load_posts($_GET['board']);
+							load_posts($_GET['board'], $_GET['num']);
 							?>
 						</div>
 					</div>
 
 					<div id=right>
-						오른쪽(?)
+						<?
+						if($_GET['board'] == "friend") {
+							$user = get_users(null, $_GET['num']);
+							$user = $user->fetch();
+							draw_user($user);
+						}
+
+						if(isset($_POST['search'])) {
+						?>
+							<div class=search-result>
+							<h3>검색 결과</h3>
+							<hr>
+							<?
+							$users = get_users("*", null);
+							foreach($users as $user) {
+								if(strstr($user['name'], $_POST['search'])) {
+								?>
+								<a href="main.html?board=friend&num=<?=$user['num']?>"><?=$user['name']?></a>
+								<br>
+							<?
+								}
+							}
+						}
+						?>
+						</div>
 					</div>
 				</div>
 			</div>

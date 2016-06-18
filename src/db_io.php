@@ -36,7 +36,7 @@ function insert($table, $data) {
 		$query = "insert into POST values(null, $num, $name, $content,$date,$time,$public)";
 		$db->exec($query);
 
-		$row = $db->query("select num from POST where date=$date and time=$time");
+		$row = $db->query("select num from POST where num=(select max(num) from POST)");
 		$row = $row->fetch();
 
 		return $row['num'];
@@ -89,6 +89,21 @@ function get_users($type, $num) {
 		$result = $db->query("select * from user where num=$num");
 
 	return $result;
+}
+
+function get_id($num) {
+	global $db;
+
+	$result = $db->query("select id from user where num=$num");
+	$result = $result->fetch();
+
+	return $result['id'];
+}
+
+function delete_post($num) {
+	global $db;
+
+	$result = $db->exec("delete from post where num=$num");
 }
 
 function check_friend($user_num, $friend_num) {
