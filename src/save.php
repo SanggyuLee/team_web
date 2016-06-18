@@ -18,10 +18,8 @@ function picture_check() {
 
 function picture_save($num) {
 	$file = $_FILES[picture][tmp_name];
-	$fileinfo = pathinfo($_FILES[picture][name]);
-	$ext = $fileinfo['extension'];
 
-	move_uploaded_file($file, "../uploads/".$_SESSION['id']."/".$num.".".$ext);
+	move_uploaded_file($file, "../uploads/".$_SESSION['id']."/".$num);
 }
 
 if(empty($_POST['content']) && $_FILES[picture][size] == 0) {
@@ -33,5 +31,6 @@ if(empty($_POST['content']) && $_FILES[picture][size] == 0) {
 	picture_save($num);
 }
 
-header('Location: main.html');
+$board = $_POST['board'];
+header("Location: main.html?board=$board");
 ?>

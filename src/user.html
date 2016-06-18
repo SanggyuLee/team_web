@@ -1,6 +1,16 @@
 <?
+include('db_io.php');
+ensure_logged_in();
 if(!isset($SESSION))
 	session_start();
+
+if(isset($_POST['add'])) {
+	add_friend($_SESSION['num'], $_GET['num']);
+	unset($_POST['add']);
+} else if(isset($_POST['delete'])) {
+	remove_friend($_SESSION['num'], $_GET['num']);
+	unset($_POST['delete']);
+}
 ?>
 
 <html>
@@ -10,7 +20,31 @@ if(!isset($SESSION))
 	</head>
 
 	<body>
-		<div>
-		</div>
+		<form method=post action="">
+		<?
+		$user = get_users(null, $_GET['num']);
+		$user = $user->fetch();
+
+		echo "이름 : ".$user['name']."<br>";
+		echo "나이 : ".$user['age']."<br>";
+		echo "baby : ".$user['baby']."<br>";
+		echo "전화번호 : ".$user['phone']."<br>";
+		echo "지역 : ".$user['location']."<br>";
+		echo "싱글유무 : ".$user['is_single']."<br>";
+		echo "성별 : ".$user['gender']."<br>";
+
+		if($_SESSION['num'] != $_GET['num']) {
+			if(!check_friend($_SESSION['num'], $_GET['num'])) {
+			?>
+				<input type=submit name=add value="친구 추가" />
+			<?
+			} else {
+			?>
+				<input type=submit name=delete value="친구 해제" />
+			<?
+			}
+		}
+		?>
+		</form>
 	</body>
 </html>

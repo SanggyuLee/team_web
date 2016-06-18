@@ -80,6 +80,40 @@ function get_posts_list($num) {
 	return $result;
 }
 
+function get_users($type, $num) {
+	global $db;
+
+	if($type == "*")
+		$result = $db->query("select * from user");
+	else
+		$result = $db->query("select * from user where num=$num");
+
+	return $result;
+}
+
+function check_friend($user_num, $friend_num) {
+	global $db;
+
+	$result = $db->query("select * from friend where user_num=$user_num and friend_num=$friend_num");
+
+	if($result->rowCount())
+		return TRUE;
+	else
+		return FALSE;
+}
+
+function add_friend($user_num, $friend_num) {
+	global $db;
+
+	$result = $db->exec("insert into friend values($user_num, $friend_num)");
+}
+
+function remove_friend($user_num, $friend_num) {
+	global $db;
+
+	$result = $db->exec("delete from friend where user_num=$user_num and friend_num=$friend_num");
+}
+
 function is_exist($table, $id) {
 	global $db;
 

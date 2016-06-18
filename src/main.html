@@ -48,8 +48,10 @@ if(!isset($_SESSION))
 			<div id=menu-wrapper>
 				<div id=main-navigation>
 					<div id=top-menu>
-						<div class=search> <img src="../img/search.png" width="35">  </div>
-						<div class=search-input> <input type=text name=search size="40" style="height:30px">  </div>
+						<form action=search.php method=post>
+							<div class=search> <input type="image" src="../img/search.png" alt="Submit" width="35"> </div>
+							<div class=search-input> <input type=text name=search size="40" style="height:30px"> </div>
+						</form>
 						<div class=logout> <a href="logout.php"><img src="../img/logout.png" width="45"></a> </div>
 
 						<div class=home> <a href="main.html?board=news"><img src="../img/home.png" width="40"></a></div>
@@ -84,6 +86,7 @@ if(!isset($_SESSION))
 							<form method="post" enctype="multipart/form-data" action="save.php">
 								<input type=hidden name=num value="<?=$_SESSION['num']?>" />
 								<input type=hidden name=name value="<?=$_SESSION['name']?>" />
+								<input type=hidden name=board value="<?=$_GET['board']?>" />
 								<? date_default_timezone_set('Asia/Seoul'); ?>
 								<input type=hidden name=date value="<?=date("Y-m-d")?>" />
 								<input type=hidden name=time value="<?=date("h:ia")?>" />
