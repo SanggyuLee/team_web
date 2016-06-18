@@ -19,14 +19,33 @@ This is a document for team project of Web Programming.
 * DB Structures
 
 - USER
-────────────────────────────────────────────────────────────────────
-│user_num│id│password|name│age│baby│phone│location│is_single│gender|
-────────────────────────────────────────────────────────────────────
++-----------+----------+------+-----+---------+----------------+
+| Field     | Type     | Null | Key | Default | Extra          |
++-----------+----------+------+-----+---------+----------------+
+| num       | int(11)  | NO   | PRI | NULL    | auto_increment |
+| id        | char(20) | YES  |     | NULL    |                |
+| password  | char(20) | YES  |     | NULL    |                |
+| name      | char(20) | YES  |     | NULL    |                |
+| age       | int(11)  | YES  |     | NULL    |                |
+| baby      | int(11)  | YES  |     | NULL    |                |
+| phone     | char(20) | YES  |     | NULL    |                |
+| location  | char(20) | YES  |     | NULL    |                |
+| is_single | char(1)  | YES  |     | NULL    |                |
+| gender    | char(1)  | YES  |     | NULL    |                |
++-----------+----------+------+-----+---------+----------------+
 
 - POST
-──────────────────────────────────────────────────
-│post_num│author│content│date│time│public│picture│
-──────────────────────────────────────────────────
++----------+----------+------+-----+---------+----------------+
+| Field    | Type     | Null | Key | Default | Extra          |
++----------+----------+------+-----+---------+----------------+
+| num      | int(11)  | NO   | PRI | NULL    | auto_increment |
+| user_num | int(11)  | YES  |     | NULL    |                |
+| name     | char(20) | YES  |     | NULL    |                |
+| content  | text     | YES  |     | NULL    |                |
+| date     | char(20) | YES  |     | NULL    |                |
+| time     | char(10) | YES  |     | NULL    |                |
+| public   | char(10) | YES  |     | NULL    |                |
++----------+----------+------+-----+---------+----------------+
 
 - REPLY
 ─────────────────────────────────────────────
@@ -34,6 +53,9 @@ This is a document for team project of Web Programming.
 ─────────────────────────────────────────────
 
 - FRIEND
-─────────────────────
-│user_num│friend_num|
-─────────────────────
++------------+---------+------+-----+---------+-------+
+| Field      | Type    | Null | Key | Default | Extra |
++------------+---------+------+-----+---------+-------+
+| user_num   | int(11) | YES  |     | NULL    |       |
+| friend_num | int(11) | YES  |     | NULL    |       |
++------------+---------+------+-----+---------+-------+

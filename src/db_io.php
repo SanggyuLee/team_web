@@ -1,39 +1,45 @@
 <?
+if(!isset($_SESSION))
+	session_start();
+
 /* DB_IO.php */
-$db = new PDO("mysql:dbname=babycare;host=localhost","root","apmsetup");
+$db = new PDO("mysql:dbname=babycare;host=localhost", "root", "master123");
 
 function insert($table, $data) {
 	global $db;
 
 	switch($table) {
 	case "USER":
-		$user_num = $db->quote(hash("md5", $data["id"]));
 		$id = $db->quote($data["id"]);
 		$password = $db->quote($data["password"]);
 		$name = $db->quote($data["name"]);
-		$age = date(Y) - $data["year"] + 1;
-		$baby = date(Y) - $data["baby_year"] + 1;
+		$age = $data["year"] + 1;
+		$baby = $data["baby_year"] + 1;
 		$phone = $db->quote($data["phone"]."-".$data["middle_number"]."-".$data["last_number"]);
 		$location = $db->quote($data["location"]);
 		$is_single = $db->quote($data["is_single"]);
 		$gender = $db->quote($data["gender"]);
 
-		$query = "insert into USER values($user_num, $id, $password, $name, $age, $baby, $phone, $location, 'y', 'm')";
+		$query = "insert into USER values(null, $id, $password, $name, $age, $baby, $phone, $location, 'y', 'm')";
 		$db->exec($query);
 		break;
 
 	case "POST":
-		$post_num = hash("md5", $data["id"].$data["date"].$data["time"]);
+		$num = $data["num"];
+		$name = $db->quote($data["name"]);
 		$author = $db->quote($data["name"]);
 		$content = $db->quote($data["content"]);
 		$date = $db->quote($data["date"]);
 		$time = $db->quote($data["time"]);
 		$public = $db->quote($data["public"]);
-		$picture = $db->quote($data["picture"]);
 
-		$query = "insert into POST values($post_num, $author,$content,$date,$time,$public,$picture)";
+		$query = "insert into POST values(null, $num, $name, $content,$date,$time,$public)";
 		$db->exec($query);
-		break;
+
+		$row = $db->query("select num from POST where date=$date and time=$time");
+		$row = $row->fetch();
+
+		return $row['num'];
 
 	case "REPLY":
 		$reply_num = $data["post_num"].$data["date"].$data["time"];
@@ -43,7 +49,7 @@ function insert($table, $data) {
 		$date = $db->quote($data["date"]);
 		$time = $db->quote($data["time"]);
 
-		$query = "insert into REPLY values($reply_num, $post_num, $author, $content, $date, $time)";
+		$query = "insert into REPLY values(null, $post_num, $author, $content, $date, $time)";
 		$db->exec($query);
 		break;
 
@@ -60,6 +66,20 @@ function insert($table, $data) {
 	}
 }
 
+function get_friends_list($num) {
+	global $db;
+
+	$result = $db->query("select friend_num from friend where user_num=$num");
+	return $result;
+}
+
+function get_posts_list($num) {
+	global $db;
+
+	$result = $db->query("select * from post where user_num=$num");
+	return $result;
+}
+
 function is_exist($table, $id) {
 	global $db;
 
@@ -72,15 +92,12 @@ function is_exist($table, $id) {
 		break;
 
 	case "POST":
-
 		break;
 
 	case "REPLY":
-
 		break;
 
 	case "FRIEND":
-
 		break;
 
 	default:
@@ -93,20 +110,29 @@ function is_exist($table, $id) {
 		return FALSE;
 }
 
-function valid($id, $password) {
+function validate_login($id, $password, &$name) {
 	global $db;
 	$id = $db->quote($id);
 	$password = $db->quote($password);
-	$query = "select count(*) from user where id=$id and password=$password";
 
-	$result = $db->query($query);
+	$result = $db->query("select num,id,password,name from user where id=$id and password=$password");
 
-	if($result->fetchColumn() == 1) {
+	if($result->rowCount() == 1) {
+		$result = $result->fetch();
+		$name = $result['name'];
+		$_SESSION['num'] = $result['num'];
 		return TRUE;
 	} else {
 		return FALSE;
-
 	}
+}
+
+function ensure_logged_in() {
+	if(!isset($_SESSION['id'])) {
+		header('Location: login.html');
+	}
+
+	return TRUE;
 }
 
 ?>
