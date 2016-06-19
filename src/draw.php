@@ -97,7 +97,31 @@ function draw_user($user) {
 }
 
 function draw_friend_alarm($num) {
-	$user = get_users(null, $num);
-	$user = $user->fetch();
+?>
+	<div class=friend-request-list>
+		<form action="" method=post>
+		<?
+		$requests = get_friend_request($num);
+		if($requests->rowCount()) {
+		?>
+			<h3>친구 요청 목록</h3> <hr>
+			<?
+			foreach($requests as $request) {
+				$user = get_users(null, $request['user_num']);
+				$user = $user->fetch();
+?>
+				<h3><a href="main.html?board=friend&num=<?=$request['user_num']?>">
+					<?=$user['name']?>
+				</a></h3>
+				<input type=hidden name=friend_num value="<?=$request['user_num']?>" />
+				<input type=submit name=friend_admit value=수락 />
+				<input type=submit name=friend_decline value=거절 />
+				<?
+			}
+		}
+		?>
+		</form>
+	</div>
+<?
 }
 ?>

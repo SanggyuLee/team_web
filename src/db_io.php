@@ -33,7 +33,12 @@ function insert($table, $data) {
 		$time = $db->quote($data["time"]);
 		$public = $db->quote($data["public"]);
 
-		$query = "insert into POST values(null, $num, $name, $content,$date,$time,$public)";
+		if($_POST['board'] != "anonymous")
+			$type = $db->quote("personal");
+		else
+			$type = $db->quote("anonymous");
+
+		$query = "insert into POST values(null, $num, $name, $content, $date, $time, $public, $type)";
 		$db->exec($query);
 
 		$row = $db->query("select num from POST where num=(select max(num) from POST)");
@@ -73,15 +78,17 @@ function get_friends_list($num) {
 	return $result;
 }
 
-function get_posts_list($num, $type) {
+function get_posts_list($num, $public, $type) {
 	global $db;
 
-	if($type == "public") {
-		$result = $db->query("select * from post where user_num=$num and public='public'");
-	} else if($type == "friend") {
-		$result = $db->query("select * from post where user_num=$num and (public='public' or public='friend')");
-	} else if($type == "private") {
-		$result = $db->query("select * from post where user_num=$num");
+	if($type == "anonymous") {
+		$result = $db->query("select * from post where type='anonymous'");
+	} else if($public == "public") {
+		$result = $db->query("select * from post where user_num=$num and public='public' and type='personal'");
+	} else if($public == "friend") {
+		$result = $db->query("select * from post where user_num=$num and (public='public' or public='friend') and type='personal'");
+	} else if($public == "private") {
+		$result = $db->query("select * from post where user_num=$num and type='personal'");
 	}
 
 	return $result;
@@ -112,6 +119,13 @@ function get_id($num) {
 	$result = $result->fetch();
 
 	return $result['id'];
+}
+
+function get_friend_request($num) {
+	global $db;
+
+	$result = $db->query("select * from friend where friend_num=$num and status='request'");
+	return $result;
 }
 
 function delete_post($num) {

@@ -17,6 +17,10 @@ if(isset($_POST['delete'])) {
 } else if(isset($_POST['reply'])) {
 	var_dump($_POST);
 	insert("REPLY", $_POST);
+} else if(isset($_POST['friend_admit'])) {
+	add_friend($_SESSION['num'], $_POST['friend_num']);
+} else if(isset($_POST['friend_decline'])) {
+	remove_friend($_POST['friend_num'], $_SESSION['num']);
 }
 
 ?>
@@ -94,6 +98,7 @@ if(isset($_POST['delete'])) {
 							<li> <a href=main.html?board=single>돌싱모임</a> </li>
 							<?  } ?>
 							<li> <a href=main.html?board=location>지역별모임</a> </li>
+							<li> <a href=main.html?board=anonymous>익명게시판</a> </li>
 						</ul>
 					</div>
 
@@ -121,7 +126,6 @@ if(isset($_POST['delete'])) {
 									<option value="private"> 비공개 </option>
 								</select>
 								<input type=submit value=작성>
-
 							</form>
 						</div>
 						<br>

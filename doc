@@ -45,6 +45,7 @@ This is a document for team project of Web Programming.
 | date     | char(20) | YES  |     | NULL    |                |
 | time     | char(10) | YES  |     | NULL    |                |
 | public   | char(10) | YES  |     | NULL    |                |
+| type     | char(10) | YES  |     | NULL    |                |
 +----------+----------+------+-----+---------+----------------+
 
 - REPLY
