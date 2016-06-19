@@ -5,28 +5,50 @@ if(!isset($SESSION))
 function draw_post($data) {
 ?>
 	<form method=post action="">
+		<input type=hidden name=num value="<?=$data['num']?>" />
+		<input type=hidden name=date value="<?=date("Y-m-d")?>" />
+		<input type=hidden name=time value="<?=date("h:ia")?>" />
 		<div class=post>
-			<a href="main.html?board=friend&num=<?=$data['user_num']?>">
+			<h3> <a href="main.html?board=friend&num=<?=$data['user_num']?>">
 			<?=$data['name']?>
-			</a>
-		<?
+			</a> </h3>
+			<hr>
+			<?
 			$id = get_id($data['user_num']);
 			$img_file = "../uploads/".$id."/".$data['num'];
 			if(file_exists($img_file)) {
 			?>
 				<img src="<?=$img_file?>" style="max-width: 650px; max-height: 500px;" />
+				<hr>
 			<?
 			}
 			echo $data['content']."<br>";
 
 			if($id == $_SESSION['id']) {
-		?>
-		<input type=submit name=delete value=삭제 />
-		<input type=submit name=edit value=수정 />
-		<input type=hidden name=num value="<?=$data['num']?>" />
-		<?
-		}
-		?>
+			?>
+
+			<div class=control>
+				<input type=submit name=delete value=삭제 />
+				<input type=submit name=edit value=수정 />
+			</div>
+
+			<?
+			}
+			?>
+
+			<div class=reply>
+				<label for=content><?=$_SESSION['name']?></label>
+				<textarea name=content rows="2%" cols="100%"></textarea>
+				<input type=submit name=reply value=작성>
+
+			<?
+			$replys = get_replys($data['num']);
+			foreach($replys as $reply) {
+				echo $reply['name']." : ".$reply['content'];
+			}
+			?>
+
+			</div>
 		</div>
 	</form>
 <?
@@ -57,7 +79,7 @@ function draw_user($user) {
 			echo "성별 : ".$user['gender']."<br>";
 
 			if($_SESSION['num'] != $user['num']) {
-				if(!check_friend($_SESSION['num'], $user['num'])) {
+				if(!check_applied_friend($_SESSION['num'], $user['num'])) {
 				?>
 					<input type=submit name=add_friend value="친구 추가" />
 					<?
@@ -72,5 +94,10 @@ function draw_user($user) {
 		</form>
 	</div>
 <?
+}
+
+function draw_friend_alarm($num) {
+	$user = get_users(null, $num);
+	$user = $user->fetch();
 }
 ?>

@@ -14,6 +14,9 @@ if(isset($_POST['delete'])) {
 	add_friend($_POST['user_num'], $_POST['friend_num']);
 } else if(isset($_POST['delete_friend'])) {
 	remove_friend($_POST['user_num'], $_POST['friend_num']);
+} else if(isset($_POST['reply'])) {
+	var_dump($_POST);
+	insert("REPLY", $_POST);
 }
 
 ?>
@@ -44,6 +47,8 @@ if(isset($_POST['delete'])) {
 			#feed { padding:10px; background-color: white; margin-top:20px;}
 			#page { background-color:#FFF0F0; }
 
+			.post { margin: 30px 0; }
+			.post > hr { margin: 15px 0; }
 			.search-input { padding:5px 0 0 0; float:right;}
 			.search {float:right; padding:3px 25px 0 10px;}
 			.friend {float:left; padding: 0 10px;}
@@ -72,9 +77,8 @@ if(isset($_POST['delete'])) {
 							<div class=search-input> <input type=text name=search size="40" style="height:30px"> </div>
 						</form>
 						<div class=logout> <a href="logout.php"><img src="../img/logout.png" width="45"></a> </div>
-
-						<div class=home> <a href="main.html?board=news"><img src="../img/home.png" width="40"></a></div>
-						<div class=friend> <img src="../img/friend.png" width="50"></div>
+						<div class=home> <a href="main.html?board=news"><img src="../img/home.png" width="40"></a> </div>
+						<div class=friend> <img src="../img/friend.png" width="50"> </div>
 						<div class=setting> <a href="setting.php"><img src="../img/setting.png" width="40"></a> </div>
 						<div class=user> <a href="main.html?board=friend&num=<?=$_SESSION['num']?>"><?=$_SESSION['name']?></a> </div>
 					</div>
@@ -85,12 +89,11 @@ if(isset($_POST['delete'])) {
 				<div id=content>
 					<div id=left>
 						<ul>
-							<li> <a href=load.php?board=news>뉴스피드</a> </li>
-							<?  if($_SESSION['is_single']) { ?>
-							<li> <a href=load.php?board=single>돌싱모임</a> </li>
+							<li> <a href=main.html?board=news>뉴스피드</a> </li>
+							<?  if(check_single($_SESSION['num'])) { ?>
+							<li> <a href=main.html?board=single>돌싱모임</a> </li>
 							<?  } ?>
-							<li> <a href=load.php?board=location>지역별모임</a> </li>
-							<li> <a href=load.php?board=friend_list>친구목록</a> </li>
+							<li> <a href=main.html?board=location>지역별모임</a> </li>
 						</ul>
 					</div>
 
@@ -133,6 +136,8 @@ if(isset($_POST['delete'])) {
 
 					<div id=right>
 						<?
+						draw_friend_alarm($_SESSION['num']);
+
 						if($_GET['board'] == "friend") {
 							$user = get_users(null, $_GET['num']);
 							$user = $user->fetch();

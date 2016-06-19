@@ -42,14 +42,13 @@ function insert($table, $data) {
 		return $row['num'];
 
 	case "REPLY":
-		$reply_num = $data["post_num"].$data["date"].$data["time"];
-		$post_num = $data["post_num"];
-		$author = $db->quote($data["author"]);
-		$content = $db->quote($data["content"]);
-		$date = $db->quote($data["date"]);
-		$time = $db->quote($data["time"]);
+		$post_num = $data['num'];
+		$name = $db->quote($_SESSION['name']);
+		$content = $db->quote($data['content']);
+		$date = $db->quote($data['date']);
+		$time = $db->quote($data['time']);
 
-		$query = "insert into REPLY values(null, $post_num, $author, $content, $date, $time)";
+		$query = "insert into REPLY values(null, $post_num, $name, $content, $date, $time)";
 		$db->exec($query);
 		break;
 
@@ -69,14 +68,29 @@ function insert($table, $data) {
 function get_friends_list($num) {
 	global $db;
 
-	$result = $db->query("select friend_num from friend where user_num=$num");
+	$rows = $db->query("select friend_num from friend where user_num=$num and status='confirm'");
+
 	return $result;
 }
 
-function get_posts_list($num) {
+function get_posts_list($num, $type) {
 	global $db;
 
-	$result = $db->query("select * from post where user_num=$num");
+	if($type == "public") {
+		$result = $db->query("select * from post where user_num=$num and public='public'");
+	} else if($type == "friend") {
+		$result = $db->query("select * from post where user_num=$num and (public='public' or public='friend')");
+	} else if($type == "private") {
+		$result = $db->query("select * from post where user_num=$num");
+	}
+
+	return $result;
+}
+
+function get_replys($num) {
+	global $db;
+
+	$result = $db->query("select * from reply where post_num=$num");
 	return $result;
 }
 
@@ -106,7 +120,31 @@ function delete_post($num) {
 	$result = $db->exec("delete from post where num=$num");
 }
 
+function check_password($num, $password) {
+	global $db;
+
+	$password = $db->quote($password);
+	$result = $db->query("select * from user where num=$num and password=$password");
+
+	if($result->rowCount())
+		return TRUE;
+	else
+		return FALSE;
+}
+
 function check_friend($user_num, $friend_num) {
+	global $db;
+
+	$result = $db->query("select * from friend where user_num=$user_num and friend_num=$friend_num");
+	$result2 = $db->query("select * from friend where friend_num=$user_num and user_num=$friend_num");
+
+	if($result->rowCount() && $result2->rowCount())
+		return TRUE;
+	else
+		return FALSE;
+}
+
+function check_applied_friend($user_num, $friend_num) {
 	global $db;
 
 	$result = $db->query("select * from friend where user_num=$user_num and friend_num=$friend_num");
@@ -117,16 +155,52 @@ function check_friend($user_num, $friend_num) {
 		return FALSE;
 }
 
+function check_single($num) {
+	global $db;
+
+	$row = $db->query("select is_single from user where num=$num");
+	$row = $row->fetch();
+
+	if($row['is_single'] == 'y')
+		return TRUE;
+
+	return FALSE;
+}
+
+function update_user_info($data) {
+	global $db;
+
+	$num = $_SESSION['num'];
+	$year = $data['year'];
+	$baby = $data['baby_year'];
+	$password = $db->quote($data['password']);
+	$name = $db->quote($data['name']);
+	$gender = $db->quote($data['gender']);
+	$phone = $db->quote($data["phone"]."-".$data["middle_number"]."-".$data["last_number"]);
+	$location = $db->quote($data['location']);
+	$is_single = $db->quote($data['is_single']);
+
+	$query = "update user set age=$year, baby=$baby, password=$password, name=$name, gender=$gender, phone=$phone, location=$location, is_single=$is_single where num=$num";
+	$result = $db->exec($query);
+}
+
 function add_friend($user_num, $friend_num) {
 	global $db;
 
-	$result = $db->exec("insert into friend values($user_num, $friend_num)");
+	$result = $db->query("select * from friend where user_num=$friend_num and friend_num=$user_num");
+	if($result->rowCount()) {
+		$result = $db->exec("update friend set status='confirm' where user_num=$friend_num and friend_num=$user_num");
+		$result = $db->exec("insert into friend values($user_num, $friend_num, 'confirm')");
+	} else {
+		$result = $db->exec("insert into friend values($user_num, $friend_num, 'request')");
+	}
 }
 
 function remove_friend($user_num, $friend_num) {
 	global $db;
 
 	$result = $db->exec("delete from friend where user_num=$user_num and friend_num=$friend_num");
+	$result = $db->exec("delete from friend where user_num=$friend_num and friend_num=$user_num");
 }
 
 function is_exist($table, $id) {
@@ -164,12 +238,14 @@ function validate_login($id, $password, &$name) {
 	$id = $db->quote($id);
 	$password = $db->quote($password);
 
-	$result = $db->query("select num,id,password,name from user where id=$id and password=$password");
+	$result = $db->query("select * from user where id=$id and password=$password");
 
 	if($result->rowCount() == 1) {
 		$result = $result->fetch();
 		$name = $result['name'];
 		$_SESSION['num'] = $result['num'];
+		$_SESSION['location'] = $result['location'];
+		$_SESSION['is_single'] = $result['is_single'];
 		return TRUE;
 	} else {
 		return FALSE;
