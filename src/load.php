@@ -189,8 +189,8 @@ function load_posts($board_type, $user_num, $hashtag) {
 
 function load_recommend($num) {
 	$friend_count = array();
-	$check = 0;
 
+	$check = 0;
 	$friends = get_friends_list($num);
 	foreach($friends as $friend) {
 		$friends2 = get_friends_list($friend['friend_num']);

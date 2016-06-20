@@ -48,7 +48,13 @@ function draw_post($data) {
 			<?
 			$replys = get_replys($data['num']);
 			foreach($replys as $reply) {
+?>
+				<div class='reply-content'>
+<?
 				echo $reply['name']." : ".$reply['content']."<br>";
+?>
+				</div>
+<?
 			}
 			?> <br>
 				<label for=content><?=$_SESSION['name']?></label>

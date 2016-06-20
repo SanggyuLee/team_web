@@ -43,10 +43,11 @@ if(isset($_POST['delete'])) {
 
 			#content-wrapper { padding:0 50px 0 50px; background-color:#FFF0F0; overflow:auto; margin:auto; width:1400px;}
 			#content {background-color:#FFF0F0; margin: 0 auto; }
-			#left { overflow: auto; background-color: white; height:100%; width:180px; float:left; margin:10px 10px 0 10px; padding:80px 20px 5px 20px; text-align: center}
-			li:hover { background-color: #FFF0F0; }
+			#left { overflow: auto; background-color: #FFF0F0; height:100%; width:180px; float:left; margin:10px 10px 0 10px; padding:80px 20px 5px 20px; text-align: center}
+			li { margin: 10px; }
+			li:hover { background-color: #FFFfF0; }
 			#middle { height:100%; width:700px; float:left; margin : 10px 0 0 0; padding: 70px 0px 10px 0px;}
-			#right { background-color:white; height:100%; width:300px; float:left; margin:10px 0 0 10px; padding:80px 0 5px 10px;}
+			#right { background-color:#FFF0F0; height:100%; width:300px; float:left; margin:10px 0 0 10px; padding:80px 0 5px 10px;}
 			#write { padding:10px; background-color: white; }
 			#feed { padding:10px; background-color: white; margin-top:20px;}
 			#page { background-color:#FFF0F0; }
@@ -67,6 +68,7 @@ if(isset($_POST['delete'])) {
 			.user-list > input {display:none;}    
 			.user-item {overflow:hidden;}
 			.search-result {display: block;}
+			.reply-content {background-color: #c8c8c8;}
 
 			.control { padding:0 0 0 600px; }
 
@@ -95,14 +97,14 @@ if(isset($_POST['delete'])) {
 			<div id=content-wrapper>
 				<div id=content>
 					<div id=left>
-						<ul>
+						<ul><strong>
 							<li> <a href=main.html?board=news>뉴스피드</a> </li>
 							<?  if(check_single($_SESSION['num'])) { ?>
 							<li> <a href=main.html?board=single>돌싱모임</a> </li>
 							<?  } ?>
 							<li> <a href=main.html?board=location>지역별모임</a> </li>
 							<li> <a href=main.html?board=anonymous>익명게시판</a> </li>
-						</ul>
+						</strong></ul>
 					</div>
 					▷ 글쓰기
 					<div id=middle>
@@ -119,15 +121,21 @@ if(isset($_POST['delete'])) {
 								<input type=hidden name=name value="<?=$_SESSION['name']?>" />
 								<input type=hidden name=board value="<?=$_GET['board']?>" />
 								<? date_default_timezone_set('Asia/Seoul'); ?>
+								<? if(!isset($post)) { ?>
 								<input type=hidden name=date value="<?=date("Y-m-d")?>" />
 								<input type=hidden name=time value="<?=date("h:ia")?>" />
 								<input type=file name=picture size=20 />
+								<? } else {?>
+								<input type=hidden name=edit value=1 />
+								<input type=hidden name=date value="<?=$post['date']?>" />
+								<input type=hidden name=time value="<?=$post['time']?>" />
+								<? } ?>
 								<br> 
-								<textarea name=content rows="10%" cols="110%"></textarea> <br>
+								<textarea name=content rows="10%" cols="110%"><?=$post['content']?></textarea> <br>
 								<select name="public"> 
-									<option value="public"> 전체공개 </option>
-									<option value="friend"> 친구공개 </option>
-									<option value="private"> 비공개 </option>
+									<option value="public" <?if($post['public'] == "public") echo "selected";?>> 전체공개 </option>
+									<option value="friend" <?if($post['public'] == "friend") echo "selected";?>> 친구공개 </option>
+									<option value="private" <?if($post['public'] == "private") echo "selected";?>> 비공개 </option>
 								</select>
 								<input type=submit value=작성>
 							</form>
@@ -137,8 +145,14 @@ if(isset($_POST['delete'])) {
 						<h3> ▷ 피드 </h3>
 						<div id=feed>
 							<?
-							$_SESSION['board'] = $_GET['board'];
-							load_posts($_GET['board'], $_GET['num'], $_GET['hashtag']);
+							if(isset($_POST['search']) && strstr($_POST['search'], "#")) {
+							$_SESSION['board'] = "hashtag";
+							$_POST['search'] = str_replace("#", "", $_POST['search']);
+							load_posts("hashtag", null, $_POST['search']);
+							} else {
+								$_SESSION['board'] = $_GET['board'];
+								load_posts($_GET['board'], $_GET['num'], $_GET['hashtag']);
+							}
 							?>
 						</div>
 					</div>
@@ -155,8 +169,6 @@ if(isset($_POST['delete'])) {
 							$user = $user->fetch();
 							draw_user($user);
 						}
-
-						load_recommend($_SESSION['num']);
 
 						if(isset($_POST['search'])) {
 						?>
@@ -175,6 +187,10 @@ if(isset($_POST['delete'])) {
 								}
 							}
 						}
+						
+						echo "<br><br>";
+						load_recommend($_SESSION['num']);
+
 						?>
 						</div>
 					</div>

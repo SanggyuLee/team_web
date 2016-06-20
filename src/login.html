@@ -9,143 +9,147 @@ if(isset($_SESSION['id']))
 
 <!DOCTYPE HTML>
 <html>
-	<meta charset='utf-8'>
-	<head>
-		<link href='https://fonts.googleapis.com/css?family=Product+Sans' rel='stylesheet' type='text/css'/>
-		<link href='http://fonts.googleapis.com/earlyaccess/notosanskr.css' rel='stylesheet' type='text/css'/>
-		<style>     
-			* { margin:0; font-family: "Product Sans";, "Noto Sans KR";, Arial, sans-serif; }
-			body a:link{color:black;}
-			body a:visited{color:black;}
-			a { text-decoration:none; }
-			li { list-style:none; }
-			img { border:0; } 
+<meta charset='utf-8'>
+<head>
+	<link href='https://fonts.googleapis.com/css?family=Product+Sans' rel='stylesheet' type='text/css'/>
+	<link href='http://fonts.googleapis.com/earlyaccess/notosanskr.css' rel='stylesheet' type='text/css'/>
+	<style>     
+		* { margin:0; font-family: "Product Sans";, "Noto Sans KR";, Arial, sans-serif; }
+		body a:link{color:black;}
+		body a:visited{color:black;}
+		a { text-decoration:none; }
+		li { list-style:none; }
+		img { border:0; } 
 
-			#login-wrapper { background-color:#ffccb2; padding: 10px 20px; width:100%; height:80px;}
-			#main-login { padding:5px; overflow:auto; }
-			#join-wrapper { padding:0 50px 0 50px; background-color:#FFF0F0; overflow:auto; height:600px;}
-			#main-join { margin: 0 auto; overflow:auto; }
+		#login-wrapper { background-color:#ffccb2; padding: 10px 20px; width:100%; height:80px;}
+		#main-login { padding:5px; overflow:auto; }
+		#join-wrapper { padding:0 50px 0 50px; background-color:#FFF0F0; overflow:auto; height:600px;}
+		#main-join { margin: 0 auto; overflow:auto; }
 
-			.title { float:left; padding:0 0 0 100px; color:gray; font-size:30px;}
-			.login { float:right; margin:20px 150px 0 0; }
-			.join { float:right; margin: 50px 100px 0 0; overflow:auto; background-color: white; padding:20px 30px 10px 30px; border-radius: 10px }
-		</style>
+		.title { float:left; padding:0 0 0 100px; color:gray; font-size:30px;}
+		.login { float:right; margin:20px 150px 0 0; }
+		.join { float:right; margin: 50px 100px 0 0; overflow:auto; background-color: white; padding:20px 30px 10px 30px; border-radius: 10px }
+		.img { width:300px; float:left; padding: 100px 0 0 200px;}
+	</style>
 
-		<title>회원가입</title>
-	</head>
+	<title>회원가입</title>
+</head>
 
-	<body>
-		<div id=page>
-			<div id=login-wrapper>
-				<div id=main-login>
-					<div class=title>
-						<h1>Mom's Touch</h1>
-					</div>
-					
-					<div class=login>
-						<form action=login.php method=post>
-							ID
-							<input type=text name=id size=15>
-							&nbsp; &nbsp; PW
-							<input type=password name=password size=15>
-							<input type=submit value='로그인'>
-						</form>
-						<?
-						if(isset($_SESSION['flash'])) {
-						echo $_SESSION['flash'];
-						unset($_SESSION['flash']);
-						}
-						?>
-					</div>
+<body>
+	<div id=page>
+		<div id=login-wrapper>
+			<div id=main-login>
+				<div class=title>
+					<h1>Mom's Touch</h1>
 				</div>
-			</div>
 
-			<div id=join-wrapper>
-				<div id=main-join>
-					<div class=join>
-						<h1> <i> ▶ Sign in </i> </h1> <br>
-						<form action=join.php method=post>
-							<table border=1 cellpadding=10px style="border-collapse:collapse;border:1px gray solid;">
-								<tr>
-									<td align=right>아이디</td>
-									<td><input type=text name=id size=15 maxlength=12></td>
-								</tr>
-								<tr>
-									<td align=right>비밀번호</td>
-									<td><input type=password name=password size=15 maxlength=10></td>
-								</tr>
-								<tr>
-									<td align=right>이름</td>
-									<td><input type=text name=name size=15 maxlength=12></td>
-								</tr>
-								<tr>
-									<td align=right>연도</td>
-									<td>
-										<select name=year>
-											<? for($i = 1970; $i <= 1999; $i++) {?>
-											<option value="<?=$i?>"><?=$i?></option>
-											<? } ?>
-										</select>
-									</td>
-								</tr>
-								<tr>
-									<td align=right>아이출생년도</td>
-									<td>
-										<select name=baby_year>
-											<? for($i = 2010; $i <= date("Y"); $i++){?>
-											<option value="<?=$i?>"><?=$i?></option>
-											<?}?>
-										</select>
-									</td>
-								</tr>
-								<tr>
-									<td align=right>성별</td>
-									<td><input type=radio name=gender value=m checked>남성  <input type=radio name=gender value=f>여성</td>
-								</tr>
-								<tr>
-									<td align=right>휴대전화</td>
-									<td>
-										<select name=phone>
-											<option value=010>010</option>
-											<option value=011>011</option>
-											<option value=016>016</option>
-											<option value=017>017</option>
-											<option value=070>070</option>
-										</select>
-										-
-										<input type=text name=middle_number size=4>
-										-
-										<input type=text name=last_number size=4>
-									</td>
-								</tr>
-								<tr>
-									<td align=right>주 소</td>
-									<td>
-										<select name=location>
-											<option value=서울>서울</option>
-											<option value=대전>대전</option>
-											<option value=울산>울산</option>
-											<option value=대구>대구</option>
-											<option value=부산>부산</option>
-											<option value=인천>인천</option>
-											<option value=세종>세종</option>
-											<option value=제주>제주</option>
-										</select>
-									</td>
-								</tr>
-								<tr>
-									<td align=right>싱글유무</td>
-									<td>
-										<input type=radio name=is_single value=y>yes
-										<input type=radio name=is_single value=n checked>no
-									</td>
-								</tr>
-							</table> <br>
-							<input type=submit value='가입'>
-						</form>
-					</div>
-				</div>
+				<div class=login>
+					<form action=login.php method=post>
+						ID
+						<input type=text name=id size=15>
+						&nbsp; &nbsp; PW
+						<input type=password name=password size=15>
+						<input type=submit value='로그인'>
+					</form>
+					<?
+					if(isset($_SESSION['flash'])) {
+					echo $_SESSION['flash'];
+					unset($_SESSION['flash']);
+				}
+				?>
 			</div>
 		</div>
-	</body>
+	</div>
+
+	<div id=join-wrapper>
+		<div id=main-join>
+			<div class = img>
+				<img src="../img/baby.png" width=300px>
+			</div>
+			<div class=join>
+				<h1> <i> ▶ Sign in </i> </h1> <br>
+				<form action=join.php method=post>
+					<table border=1 cellpadding=10px style="border-collapse:collapse;border:1px gray solid;">
+						<tr>
+							<td align=right>아이디</td>
+							<td><input type=text name=id size=15 maxlength=12></td>
+						</tr>
+						<tr>
+							<td align=right>비밀번호</td>
+							<td><input type=password name=password size=15 maxlength=10></td>
+						</tr>
+						<tr>
+							<td align=right>이름</td>
+							<td><input type=text name=name size=15 maxlength=12></td>
+						</tr>
+						<tr>
+							<td align=right>연도</td>
+							<td>
+								<select name=year>
+									<? for($i = 1970; $i <= 1999; $i++) {?>
+									<option value="<?=$i?>"><?=$i?></option>
+									<? } ?>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td align=right>아이출생년도</td>
+							<td>
+								<select name=baby_year>
+									<? for($i = 2010; $i <= date("Y"); $i++){?>
+									<option value="<?=$i?>"><?=$i?></option>
+									<?}?>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td align=right>성별</td>
+							<td><input type=radio name=gender value=m checked>남성  <input type=radio name=gender value=f>여성</td>
+						</tr>
+						<tr>
+							<td align=right>휴대전화</td>
+							<td>
+								<select name=phone>
+									<option value=010>010</option>
+									<option value=011>011</option>
+									<option value=016>016</option>
+									<option value=017>017</option>
+									<option value=070>070</option>
+								</select>
+								-
+								<input type=text name=middle_number size=4>
+								-
+								<input type=text name=last_number size=4>
+							</td>
+						</tr>
+						<tr>
+							<td align=right>주 소</td>
+							<td>
+								<select name=location>
+									<option value=서울>서울</option>
+									<option value=대전>대전</option>
+									<option value=울산>울산</option>
+									<option value=대구>대구</option>
+									<option value=부산>부산</option>
+									<option value=인천>인천</option>
+									<option value=세종>세종</option>
+									<option value=제주>제주</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td align=right>싱글유무</td>
+							<td>
+								<input type=radio name=is_single value=y>yes
+								<input type=radio name=is_single value=n checked>no
+							</td>
+						</tr>
+					</table> <br>
+					<input type=submit value='가입'>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
 </html>

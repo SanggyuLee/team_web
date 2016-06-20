@@ -70,6 +70,14 @@ function insert($table, $data) {
 	}
 }
 
+function update_post($data) {
+	global $db;
+
+	$content = $db->quote($data['content']);
+	$public = $db->quote($data['public']);
+	$result = $db->exec("update post set content=$content, public=$public where num=$num");
+}
+
 function get_friends_list($num) {
 	global $db;
 
@@ -125,6 +133,15 @@ function get_friend_request($num) {
 	global $db;
 
 	$result = $db->query("select * from friend where friend_num=$num and status='request'");
+	return $result;
+}
+
+function get_post($num) {
+	global $db;
+
+	$result = $db->query("select * from post where num=$num");
+	$result = $result->fetch();
+
 	return $result;
 }
 

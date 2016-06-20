@@ -55,8 +55,13 @@ if(empty($_POST['content']) && $_FILES[picture][size] == 0) {
 	$_POST['content'] = language_filter($_POST['content']);
 	$_POST['content'] = shortword_filter($_POST['content']);
 	$_POST['content'] = convert_hashtags($_POST['content']);
-	$num = insert("POST", $_POST);
-	picture_save($num);
+
+	if($_POST['edit'] != 1) {
+		$num = insert("POST", $_POST);
+		picture_save($num);
+	} else {
+		update_post($_POST);
+	}
 }
 
 $board = $_SESSION['board'];

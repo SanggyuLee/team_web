@@ -16,14 +16,17 @@ if(isset($_POST['year'])) {
 	header('Location: main.html?board=news');
 } else if(check_password($_SESSION['num'], $_POST['password'])) {
 ?>
-
+<style>
+		* {background-color: #FFF0F0;} 
+		#join-wrapper {margin:100px 0 0 500px;}
+</style>
 <html>
 	<body>
 		<div id=join-wrapper>
 			<div id=main-join>
 				<div class=join>
-					<h1> <i> ▶ 회원정보변경 </i> </h1>
-					<hr>
+					<h1> ▶ 회원정보변경 </h1>
+					
 					<form action="" method=post>
 						<table border=1 cellpadding=10px style="border-collapse:collapse;border:1px gray solid;">
 							<tr>
@@ -116,7 +119,6 @@ if(isset($_POST['year'])) {
 <html>
 	<style>
 		fieldset {
-			background-color: #ffffcc;
 			margin-left: auto;
 			margin-right: auto;
 			width: 21em;
@@ -140,11 +142,14 @@ if(isset($_POST['year'])) {
 			background-color: white;
 			border: 1px solid black;
 			padding: 0.25em;
-		}
+		}		
+
 	</style>
 	<body>
+	<br> <br><br><br><br><br><br><br><br><br>
 		<form method=post action="">
 			<fieldset>
+
 				<legend>비밀번호를 입력하세요</legend>
 				<label class=heading for=password>패스워드:</label>
 				<input type=password name=password id="password"/><br>
