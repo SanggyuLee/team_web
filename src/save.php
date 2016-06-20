@@ -40,6 +40,13 @@ function shortword_filter($content) {
 	return $content;
 }
 
+function convert_hashtags($content){
+	$regex = "/#+([a-zA-Z0-9가-힇_]+)/";
+	$content= preg_replace($regex, '<a href=main.html?board=hashtag&hashtag=$1>$0</a>', $content);
+
+	return $content;
+}
+
 if(empty($_POST['content']) && $_FILES[picture][size] == 0) {
 	$_SESSION['flash'] = "그림 또는 글을 작성하셔야 합니다.";
 } else if($_FILES[picture][size] != 0 && !picture_check()) {
@@ -47,6 +54,7 @@ if(empty($_POST['content']) && $_FILES[picture][size] == 0) {
 } else {
 	$_POST['content'] = language_filter($_POST['content']);
 	$_POST['content'] = shortword_filter($_POST['content']);
+	$_POST['content'] = convert_hashtags($_POST['content']);
 	$num = insert("POST", $_POST);
 	picture_save($num);
 }

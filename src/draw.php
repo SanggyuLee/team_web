@@ -43,17 +43,17 @@ function draw_post($data) {
 			?>
 
 			<div class=reply>
-				<label for=content><?=$_SESSION['name']?></label>
-				<textarea name=content rows="2%" cols="100%"></textarea>
-				<input type=submit name=reply value=작성>
+			<br> <br> <br>
 
 			<?
 			$replys = get_replys($data['num']);
 			foreach($replys as $reply) {
-				echo $reply['name']." : ".$reply['content'];
+				echo $reply['name']." : ".$reply['content']."<br>";
 			}
-			?>
-
+			?> <br>
+				<label for=content><?=$_SESSION['name']?></label>
+				<input type=text name=content size=80>
+				<input type=submit name=reply value=작성>
 			</div>
 		</div>
 	</form>
@@ -67,10 +67,10 @@ function draw_user($user) {
 		<input type=hidden name=user_num value=<?=$_SESSION['num']?> />
 		<input type=hidden name=friend_num value=<?=$user['num']?> />
 		<? 
-		echo "<br><br>";
+		echo "";
 		?> 
 		<h3><label for=<?=$user['name']?>>
-			<?=$user['name'];?>
+			<?=$user['name'];?>님의 정보
 		</label></h3><hr>
 
 		<div class=user-item>
@@ -82,8 +82,7 @@ function draw_user($user) {
 			echo "전화번호 : ".$user['phone']."<br>";
 			echo "지역 : ".$user['location']."<br>";
 			echo "싱글유무 : ".$user['is_single']."<br>";
-			echo "성별 : ".$user['gender']."<br>";
-
+			echo "성별 : ".$user['gender']."<br><br>";
 			if($_SESSION['num'] != $user['num']) {
 				if(!check_applied_friend($_SESSION['num'], $user['num'])) {
 				?>

@@ -20,7 +20,7 @@ function sorting($list) {
 	return $list;
 }
 
-function load_posts($board_type, $user_num) {
+function load_posts($board_type, $user_num, $hashtag) {
 	if($board_type == 'news') {
 		$i = 0;
 
@@ -146,6 +146,31 @@ function load_posts($board_type, $user_num) {
 
 		foreach($posts as $post) {
 			$post_list[$i++] = $post;
+		}
+
+		$count = $i;
+
+		/* TODO: Sorting */
+		$post_list = sorting($post_list);
+
+		/* Print out */
+		if(!empty($post_list)) {
+			for($i = 0; $i < $count; $i++) {
+				draw_post($post_list[$i]);
+			}
+		}
+	} else if($board_type == 'hashtag') {
+		$i = 0;
+
+		/* Get post of all */
+		$users = get_users("*", null);
+		foreach($users as $user) {
+			$posts = get_posts_list($user['num'], "public", "personal");
+
+			foreach($posts as $post) {
+				if(strstr($post['content'], "#".$hashtag))
+					$post_list[$i++] = $post;
+			}
 		}
 
 		$count = $i;

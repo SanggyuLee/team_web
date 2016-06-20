@@ -15,7 +15,6 @@ if(isset($_POST['delete'])) {
 } else if(isset($_POST['delete_friend'])) {
 	remove_friend($_POST['user_num'], $_POST['friend_num']);
 } else if(isset($_POST['reply'])) {
-	var_dump($_POST);
 	insert("REPLY", $_POST);
 } else if(isset($_POST['friend_admit'])) {
 	add_friend($_SESSION['num'], $_POST['friend_num']);
@@ -44,9 +43,10 @@ if(isset($_POST['delete'])) {
 
 			#content-wrapper { padding:0 50px 0 50px; background-color:#FFF0F0; overflow:auto; margin:auto; width:1400px;}
 			#content {background-color:#FFF0F0; margin: 0 auto; }
-			#left { overflow: scroll; background-color: white; height:100%; width:200px; float:left; margin:10px 10px 0 10px; padding:80px 0 5px 5px;}
+			#left { overflow: auto; background-color: white; height:100%; width:180px; float:left; margin:10px 10px 0 10px; padding:80px 20px 5px 20px; text-align: center}
+			li:hover { background-color: #FFF0F0; }
 			#middle { height:100%; width:700px; float:left; margin : 10px 0 0 0; padding: 70px 0px 10px 0px;}
-			#right { background-color:white; height:100%; width:300px; float:left; margin:10px 0 0 10px; padding:80px 0 5px 5px;}
+			#right { background-color:white; height:100%; width:300px; float:left; margin:10px 0 0 10px; padding:80px 0 5px 10px;}
 			#write { padding:10px; background-color: white; }
 			#feed { padding:10px; background-color: white; margin-top:20px;}
 			#page { background-color:#FFF0F0; }
@@ -67,6 +67,9 @@ if(isset($_POST['delete'])) {
 			.user-list > input {display:none;}    
 			.user-item {overflow:hidden;}
 			.search-result {display: block;}
+
+			.control { padding:0 0 0 600px; }
+
 		</style>
 		<title>
 		</title>
@@ -82,7 +85,7 @@ if(isset($_POST['delete'])) {
 						</form>
 						<div class=logout> <a href="logout.php"><img src="../img/logout.png" width="45"></a> </div>
 						<div class=home> <a href="main.html?board=news"><img src="../img/home.png" width="40"></a> </div>
-						<div class=friend> <a href="main.html?board=<?=$_SESSION['board']?>&friend_list=1"><img src="../img/friend.png" width="50"></a> </div>
+						<div class=friend> <a href="main.html?board=news&friend_list=1"><img src="../img/friend.png" width="50"></a> </div>
 						<div class=setting> <a href="setting.php"><img src="../img/setting.png" width="40"></a> </div>
 						<div class=user> <a href="main.html?board=friend&num=<?=$_SESSION['num']?>"><?=$_SESSION['name']?></a> </div>
 					</div>
@@ -101,7 +104,7 @@ if(isset($_POST['delete'])) {
 							<li> <a href=main.html?board=anonymous>익명게시판</a> </li>
 						</ul>
 					</div>
-
+					▷ 글쓰기
 					<div id=middle>
 						<?
 						if(isset($_SESSION['flash'])) {
@@ -109,6 +112,7 @@ if(isset($_POST['delete'])) {
 							unset($_SESSION['flash']);
 						}
 						?>
+						<br> <h3> ▷ 글쓰기 </h3> <br>
 						<div id=write>
 							<form method="post" enctype="multipart/form-data" action="save.php">
 								<input type=hidden name=num value="<?=$_SESSION['num']?>" />
@@ -119,7 +123,7 @@ if(isset($_POST['delete'])) {
 								<input type=hidden name=time value="<?=date("h:ia")?>" />
 								<input type=file name=picture size=20 />
 								<br> 
-								<textarea name=content rows="10%" cols="80%"></textarea>
+								<textarea name=content rows="10%" cols="110%"></textarea> <br>
 								<select name="public"> 
 									<option value="public"> 전체공개 </option>
 									<option value="friend"> 친구공개 </option>
@@ -130,11 +134,11 @@ if(isset($_POST['delete'])) {
 						</div>
 						<br>
 						<br>
-						▷ 새글피드
+						<h3> ▷ 피드 </h3>
 						<div id=feed>
 							<?
 							$_SESSION['board'] = $_GET['board'];
-							load_posts($_GET['board'], $_GET['num']);
+							load_posts($_GET['board'], $_GET['num'], $_GET['hashtag']);
 							?>
 						</div>
 					</div>
@@ -157,14 +161,15 @@ if(isset($_POST['delete'])) {
 						if(isset($_POST['search'])) {
 						?>
 							<div class=search-result>
-							<h3>검색 결과</h3>
+							<br> 
+							<h3>친구 검색 결과</h3>
 							<hr>
 							<?
 							$users = get_users("*", null);
 							foreach($users as $user) {
 								if(strstr($user['name'], $_POST['search'])) {
 								?>
-								<a href="main.html?board=friend&num=<?=$user['num']?>"><?=$user['name']?></a>
+								<br> <a href="main.html?board=friend&num=<?=$user['num']?>"><?=$user['name']?></a>
 								<br>
 							<?
 								}
