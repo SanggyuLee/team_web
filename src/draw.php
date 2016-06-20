@@ -154,4 +154,27 @@ function draw_friend_list($num) {
 	</div>
 <?
 }
+
+function draw_recommend($friend_count) {
+?>
+	<div class=friend-list>
+		<form action="" method=post>
+			<h3>친구 추천 목록</h3> <hr>
+	<?
+	foreach($friend_count as $key => $result) {
+		if($result >= 2 && !check_friend($_SESSION['num'], $key) && $_SESSION['num'] != $key) {
+			$user = get_users(null, $key);
+			$user = $user->fetch();
+			?>
+			<h4><a href="main.html?board=friend&num=<?=$user['num']?>">
+			<?=$user['name']?>
+			</a></h4>
+			<?
+			}
+			?>
+		</form>
+	</div>
+<?
+	}
+}
 ?>

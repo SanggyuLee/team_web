@@ -161,4 +161,22 @@ function load_posts($board_type, $user_num) {
 		}
 	}
 }
+
+function load_recommend($num) {
+	$friend_count = array();
+	$check = 0;
+
+	$friends = get_friends_list($num);
+	foreach($friends as $friend) {
+		$friends2 = get_friends_list($friend['friend_num']);
+		foreach($friends2 as $friend2) {
+			$friend_count[$friend2['friend_num']] += 1;
+			if($friend_count[$friend2['friend_num']] >= 2)
+				$check = 1;
+		}
+	}
+
+	if($check == 1)
+		draw_recommend($friend_count);
+}
 ?>
