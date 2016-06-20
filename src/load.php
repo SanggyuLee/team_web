@@ -35,7 +35,7 @@ function load_posts($board_type, $user_num) {
 		$friends = get_friends_list($_SESSION['num']);
 		if(!empty($friends)) {
 			foreach($friends as $friend) {
-				$posts = get_posts_list($friend['friend_num'], "friend");
+				$posts = get_posts_list($friend['friend_num'], "friend", "personal");
 
 				foreach($posts as $post) {
 					$post_list[$i++] = $post;
@@ -142,12 +142,10 @@ function load_posts($board_type, $user_num) {
 
 		/* Get post of all */
 		$users = get_users("*", null);
-		foreach($users as $user) {
-			$posts = get_posts_list($user['num'], "a", "anonymous");
+		$posts = get_posts_list($user['num'], "a", "anonymous");
 
-			foreach($posts as $post) {
-				$post_list[$i++] = $post;
-			}
+		foreach($posts as $post) {
+			$post_list[$i++] = $post;
 		}
 
 		$count = $i;

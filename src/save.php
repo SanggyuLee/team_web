@@ -51,6 +51,6 @@ if(empty($_POST['content']) && $_FILES[picture][size] == 0) {
 	picture_save($num);
 }
 
-$board = $_POST['board'];
-header('Location: main.html?board=news');
+$board = $_SESSION['board'];
+header("Location: main.html?board=$board");
 ?>

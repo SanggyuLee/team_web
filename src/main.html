@@ -82,7 +82,7 @@ if(isset($_POST['delete'])) {
 						</form>
 						<div class=logout> <a href="logout.php"><img src="../img/logout.png" width="45"></a> </div>
 						<div class=home> <a href="main.html?board=news"><img src="../img/home.png" width="40"></a> </div>
-						<div class=friend> <img src="../img/friend.png" width="50"> </div>
+						<div class=friend> <a href="main.html?board=<?=$_SESSION['board']?>&friend_list=1"><img src="../img/friend.png" width="50"></a> </div>
 						<div class=setting> <a href="setting.php"><img src="../img/setting.png" width="40"></a> </div>
 						<div class=user> <a href="main.html?board=friend&num=<?=$_SESSION['num']?>"><?=$_SESSION['name']?></a> </div>
 					</div>
@@ -133,6 +133,7 @@ if(isset($_POST['delete'])) {
 						▷ 새글피드
 						<div id=feed>
 							<?
+							$_SESSION['board'] = $_GET['board'];
 							load_posts($_GET['board'], $_GET['num']);
 							?>
 						</div>
@@ -140,6 +141,9 @@ if(isset($_POST['delete'])) {
 
 					<div id=right>
 						<?
+						if($_GET['friend_list'] == 1)
+							draw_friend_list($_SESSION['num']);
+
 						draw_friend_alarm($_SESSION['num']);
 
 						if($_GET['board'] == "friend") {

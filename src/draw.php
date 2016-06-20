@@ -9,9 +9,15 @@ function draw_post($data) {
 		<input type=hidden name=date value="<?=date("Y-m-d")?>" />
 		<input type=hidden name=time value="<?=date("h:ia")?>" />
 		<div class=post>
+			<?
+			if($_SESSION['board'] != "anonymous") {
+			?>
 			<h3> <a href="main.html?board=friend&num=<?=$data['user_num']?>">
 			<?=$data['name']?>
 			</a> </h3>
+			<?
+			}
+			?>
 			<hr>
 			<?
 			$id = get_id($data['user_num']);
@@ -119,6 +125,30 @@ function draw_friend_alarm($num) {
 				<?
 			}
 		}
+		?>
+		</form>
+	</div>
+<?
+}
+
+function draw_friend_list($num) {
+?>
+	<div class=friend-list>
+		<form action="" method=post>
+		<?
+			$friends = get_friends_list($num);
+		?>
+			<h3>친구 목록(총 <?=$friends->rowCount()?> 명)</h3> <hr>
+		<?
+			foreach($friends as $friend) {
+				$friend = get_users(null, $friend['friend_num']);
+				$friend = $friend->fetch();
+		?>
+				<h4><a href="main.html?board=friend&num=<?=$friend['num']?>">
+				<?=$friend['name']?>
+				</a></h4>
+		<?
+			}
 		?>
 		</form>
 	</div>

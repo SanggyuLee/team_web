@@ -64,7 +64,6 @@ if(isset($_POST['year'])) {
 							<tr>
 								<?
 								list($first, $second, $third) = explode("-", $user['phone']);
-								echo $first.".".$second.".".$third;
 								?>
 								<td align=right>휴대전화</td>
 								<td>

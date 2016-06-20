@@ -73,7 +73,7 @@ function insert($table, $data) {
 function get_friends_list($num) {
 	global $db;
 
-	$rows = $db->query("select friend_num from friend where user_num=$num and status='confirm'");
+	$result = $db->query("select friend_num from friend where user_num=$num and status='confirm'");
 
 	return $result;
 }
